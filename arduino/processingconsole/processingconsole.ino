@@ -41,11 +41,11 @@ void setup() {
 }
 
 void loop() {
-  if ((state == STATE_LED_OFF) && ((millis() - lastTs)> 2000)) {
+  if ((state == STATE_LED_OFF) && ((millis() - lastTs)> 1000)) {
     digitalWrite(LED_BUILTIN, HIGH);
     state = STATE_LED_ON;
     lastTs = millis();
-  } else if ((state == STATE_LED_ON) && ((millis() - lastTs) > 5000)) {
+  } else if ((state == STATE_LED_ON) && ((millis() - lastTs) > 500)) {
     state = STATE_LED_OFF;
     digitalWrite(LED_BUILTIN, LOW);
     lastTs = millis();
