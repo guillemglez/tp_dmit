@@ -87,6 +87,7 @@ void loop() {
     
     lastLog = millis();
   }
+   pinged = pingall();
 
  /* Serial.println("PINGING...");
   png = WiFi.ping(ip);
@@ -98,7 +99,7 @@ void loop() {
 String pingall() {
   Serial.println("Pinging in LAN...");
   String reponse = "PING";
-  int maxI = 254;
+  int maxI = 248;
   for (byte i = 241; i < maxI; i++) {
     ip[3] = i;
     if (WiFi.localIP() == IPAddress(192, 168, 0, i)) continue;
