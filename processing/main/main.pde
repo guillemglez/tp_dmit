@@ -24,6 +24,7 @@ private Button expandBtn;
 private Button currentComBtn;
 private Graph graph;
 private LogInfo loginfo;
+private IPInfo ipinfo;
 private int count;
 private String btnText;
 
@@ -51,12 +52,15 @@ void setup() {
      listYStart += LIST_HEIGHT;
      count++;
    }
-   loginfo = new LogInfo(GRAPH_POSX + GRAPH_WIDTH + 50, GRAPH_POSY, GRAPH_WIDTH, GRAPH_HEIGHT);
+   loginfo = new LogInfo(GRAPH_POSX + GRAPH_WIDTH + 50, GRAPH_POSY, GRAPH_WIDTH, GRAPH_HEIGHT / 2);
    loginfo.setSSID("Notre SSID");
    loginfo.setPWD("Notre PWD");
    loginfo.setIP("Notre IP");
    loginfo.setMAC("Notre MAC");
+   
+   ipinfo = new IPInfo(GRAPH_POSX + GRAPH_WIDTH + 50, GRAPH_POSY + GRAPH_HEIGHT / 2, GRAPH_WIDTH, GRAPH_HEIGHT / 2);
 }
+
 void draw() {
 
   background(236, 240, 241);
@@ -89,6 +93,7 @@ void draw() {
   }
   
   loginfo.draw();
+  ipinfo.draw();
 }
 
 void mouseReleased() {
@@ -132,6 +137,20 @@ void serialEvent(Serial arduino){
    if (serialText.contains("IP")) loginfo.setIP(serialText.split(":")[1]);
    if (serialText.contains("PWD")) loginfo.setPWD(serialText.split(":")[1]);
    if (serialText.contains("MAC")) loginfo.setMAC(serialText.substring(5));
+   if (serialText.contains("PING")) {
+     int[] IPs = ipinfo.getIPs();
+     boolean[] pings = new boolean[IPs.length];
+     for (int i = 0; i < IPs.length; i++) {
+       if (serialText.contains(String.valueOf(ipinfo.IPS[i]))) {
+         pings[i] = true;
+       } else {
+         pings[i] = false;
+       }
+     }
+     String stringip = split(loginfo.getIP(),'.')[3];
+     int myip = Integer.parseInt(stringip.substring(0, stringip.length() - 2));
+     ipinfo.update(pings,myip);
+   }
 }
 
 void mouseMoved(){
