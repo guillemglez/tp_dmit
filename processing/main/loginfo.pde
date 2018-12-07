@@ -20,6 +20,11 @@ public class LogInfo {
   void setIP(String ip) {
     this.ip = ip;
   }
+  
+  String getIP() {
+    return this.ip;
+  }
+  
   void setMAC(String mac) {
     this.mac = mac;
   }
@@ -29,7 +34,7 @@ public class LogInfo {
     noFill();
     rect(posX, posY, width, height);
     
-    int textY = posY + 10 + textSpacing;
+    int textY = posY + 20;
     int textX = posX + 10;
     textAlign(LEFT);
     //textSize(32);
