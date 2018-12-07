@@ -8,6 +8,7 @@ unsigned long lastLog;
 
 char ssid[] = "TP_DMIT";
 char pwd[] = "dmit3ATP";
+String pinged;
 byte mac[6];
 int status = WL_IDLE_STATUS;  
 char serverAddress[] = "192.168.0.102";  // server address
@@ -35,6 +36,8 @@ void setup() {
   WiFi.macAddress(mac);
   lastTs = millis();
   lastLog = lastTs;
+
+  pinged = pingall();
 }
 
 void loop() {
@@ -48,7 +51,7 @@ void loop() {
     lastTs = millis();
   }
 
-  if (0){//(millis() - lastLog) > 200){
+  if ((millis() - lastLog) > 200){
     
     Serial.println("READY");
     
@@ -79,31 +82,29 @@ void loop() {
     Serial.print(mac[1],HEX);
     Serial.print(":");
     Serial.println(mac[0],HEX);
+
+    Serial.println(pinged);
     
     lastLog = millis();
   }
 
-  lastLog = millis();
  /* Serial.println("PINGING...");
   png = WiFi.ping(ip);
   Serial.println(millis() - lastLog);
   //Serial.println(WiFi.gatewayIP());
-  */
-  pingall();
-  
+  */  
 }
 
-void pingall() {
-  Serial.print("PING:");
+String pingall() {
+  Serial.println("Pinging in LAN...");
+  String reponse = "PING";
   int maxI = 254;
   for (byte i = 241; i < maxI; i++) {
     ip[3] = i;
+    if (WiFi.localIP() == IPAddress(192, 168, 0, i)) continue;
     if (WiFi.ping(ip) >= 0) {
-    Serial.print(ip[3],DEC);
-    Serial.print(":");
+      reponse += ":" + String(ip[3],DEC);
     }
   }
-  Serial.println("PING");
+  return reponse + ":PING";
 }
-
-
