@@ -1,6 +1,4 @@
 #include <WiFiNINA.h>
-#include <ArduinoHttpClient.h>
-#include <SPI.h>
 
 #define STATE_LED_OFF 20
 #define STATE_LED_ON 30
@@ -16,10 +14,9 @@ char serverAddress[] = "192.168.0.102";  // server address
 int port = 80;
 int statusCode = 0;
 WiFiClient wifi;
-HttpClient client = HttpClient(wifi, serverAddress, port);
 String response;
 boolean png;
-byte ip[] = { 192, 168, 5, 254 };
+byte ip[] = { 192, 168, 0, 254 };
 
 void setup() {
   // put your setup code here, to run once:
@@ -87,19 +84,23 @@ void loop() {
   }
 
   lastLog = millis();
-  Serial.println("PINGING...");
+ /* Serial.println("PINGING...");
   png = WiFi.ping(ip);
   Serial.println(millis() - lastLog);
   //Serial.println(WiFi.gatewayIP());
+  */
+  pingall();
   
 }
 
 void pingall() {
-  Serial.println("PING");
-  for (byte i = 1; i < 254; i++) {
+  Serial.print("PING:");
+  int maxI = 254;
+  for (byte i = 241; i < maxI; i++) {
     ip[3] = i;
     if (WiFi.ping(ip) >= 0) {
-      //Serial.println(ip); 
+    Serial.print(ip[3],DEC);
+    Serial.print(":");
     }
   }
   Serial.println("PING");
