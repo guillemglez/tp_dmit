@@ -67,9 +67,9 @@ void loop() {
 
     Serial.print("PWD:");
     Serial.println(pwd);
-
-    Serial.print("IP:");
-    Serial.println(WiFi.localIP());
+//
+//    Serial.print("IP:");
+//    Serial.println(WiFi.localIP());
 
     Serial.print("MAC:");
     Serial.print(mac[5], HEX);
