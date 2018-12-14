@@ -32,6 +32,9 @@ public class Graph {
       }
     }
     stroke(0);
+    textAlign(RIGHT);
+    text(int(minVal),this.posX - 5, this.posY + this.height + 7);
+    text(int(maxVal),this.posX - 5, this.posY + 7);
   }
   
   private int XtoCanvas(int x) {

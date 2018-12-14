@@ -9,13 +9,14 @@ public class UdpServer {
     this.posY = posY;
     this.width = width;
     this.height = height;
+    lines = new ArrayList<String>();
   }
   
   void addLine(String remitent, String message) {
     if(lines.size() == maxlines){
       lines.remove(0);
     }
-    lines.add(ip + message);;
+    lines.add(remitent + message);;
   }
   
   void draw() {
@@ -26,6 +27,7 @@ public class UdpServer {
     textAlign(LEFT);
     //textSize(32);
     
+    fill(0);
     for (int i = 0; i < lines.size(); i++) {
        text(lines.get(i), posX + textSpacing, posY + (i+1)*textSpacing);
     }     
