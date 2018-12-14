@@ -13,7 +13,7 @@ public static final int LED_HEIGHT = 40;
 public static final int GRAPH_POSX = 40;
 public static final int GRAPH_POSY = 120;
 public static final int GRAPH_WIDTH = 250;
-public static final int GRAPH_HEIGHT = 150;
+public static final int GRAPH_HEIGHT = 300;
 public boolean ledState = false;
 Serial arduino;
 private String[] arrayOfCOM;
@@ -22,8 +22,7 @@ private Button[] listBtn = new Button[20];
 private Button connectBtn;
 private Button expandBtn;
 private Button currentComBtn;
-private Graph graphTemp;
-private Graph graphHum;
+private Graph2 graphSensor;
 private UdpServer udpserver;
 private int count;
 private String btnText;
@@ -32,7 +31,7 @@ private String btnText;
 import processing.serial.*;
 
 void settings() {
-  size(640, 640);
+  size(640, 1280);
   smooth();
 }
 
@@ -40,7 +39,6 @@ void setup() {
    count=0;
    ledState = false;
    btnText = "--";
-   graphTemp = new Graph(GRAPH_POSX,GRAPH_POSY,GRAPH_WIDTH,GRAPH_HEIGHT,-10,60);
    connectBtn = new Button(RECT_1_X, RECT_1_Y, RECT_WIDTH, RECT_HEIGHT, "CONNECT", 46, 204, 113, 231, 76, 60);
    expandBtn = new Button(LIST_START_X-RECT_HEIGHT, LIST_START_Y, RECT_HEIGHT, RECT_HEIGHT, "+", 255,255,255, 150,150,150 );
    currentComBtn = new Button(LIST_START_X, LIST_START_Y, LIST_WIDTH, LIST_HEIGHT, btnText, 255, 255, 255, 150, 150, 150);
@@ -52,8 +50,8 @@ void setup() {
      listYStart += LIST_HEIGHT;
      count++;
    }
-   graphHum = new Graph(GRAPH_POSX + GRAPH_WIDTH + 50, GRAPH_POSY,GRAPH_WIDTH,GRAPH_HEIGHT,0,100);
-   udpserver = new UdpServer(GRAPH_POSX, GRAPH_POSY + GRAPH_HEIGHT + 50, GRAPH_HEIGHT, GRAPH_WIDTH + 50 + GRAPH_WIDTH);
+   graphSensor = new Graph2(GRAPH_POSX, GRAPH_POSY, GRAPH_WIDTH*2 + 50 ,GRAPH_HEIGHT, 10,50,20, 80);
+   udpserver = new UdpServer(GRAPH_POSX, GRAPH_POSY + GRAPH_HEIGHT + 50, GRAPH_WIDTH + 50 + GRAPH_WIDTH, GRAPH_HEIGHT);
 }
 
 void draw() {
@@ -71,11 +69,7 @@ void draw() {
   }
   ellipse(LED_START_X, LED_START_Y, LED_WIDTH, LED_HEIGHT);
  
-  count += 8;
-  graphTemp.addValue((float)Math.sin(Math.toRadians(count%360))); 
-  graphHum.addValue((float)Math.sin(Math.toRadians(count%360)));
-  graphTemp.draw();
-  graphHum.draw();
+  graphSensor.draw();
     
   connectBtn.draw();
   expandBtn.draw();
@@ -89,7 +83,6 @@ void draw() {
     expandBtn.setText("+");
   }
   
-  graphHum.draw();
   udpserver.draw();
 }
 
@@ -130,6 +123,9 @@ void serialEvent(Serial arduino){
    String serialText = arduino.readString();
    if (serialText.contains("LED_ON")) ledState = true;
    if (serialText.contains("LED_OFF")) ledState = false;
+   if (serialText.contains("UDP")) udpserver.addLine("UDP: ", serialText.split(":")[2]);
+   if (serialText.contains("HUM")) graphSensor.addValue2(Float.parseFloat(serialText.split(":")[1]));
+   if (serialText.contains("TEMP")) graphSensor.addValue1(Float.parseFloat(serialText.split(":")[1]));
 }
 
 void mouseMoved(){

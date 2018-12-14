@@ -78,7 +78,7 @@ void loop() {
     Udp.endPacket();
   }
   
-  if ( (millis() - lastTime) > 500){
+  if ( (millis() - lastTime) > 50){
     lastTime = millis();
     Serial.print("HUM:");
     Serial.println(sensor.readHumidity(), 2);

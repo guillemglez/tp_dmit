@@ -2,7 +2,7 @@ public class Graph {
   private int posX,posY,width,height;
   private float minVal, maxVal;
   private ArrayList<Float> donnees;
-  private final static int MAX_ARRAY_SIZE=50;
+  private final static int MAX_ARRAY_SIZE=20;
   
   public Graph(int posX,int posY,int width, int height, float minVal, float maxVal) {
     this.posX = posX;
@@ -18,7 +18,9 @@ public class Graph {
     fill(122);
     rect(this.posX-1, this.posY-1, this.width+1, this.height+1);
     fill(0);
+    if (minVal < 0 && maxVal > 0){
     line(this.XtoCanvas(0), YtoCanvas(0), XtoCanvas(MAX_ARRAY_SIZE), YtoCanvas(0));
+    }
     for(int i = 0; i < donnees.size()-1 ;i++){
       stroke(255,0,0);
       line(this.XtoCanvas(i), YtoCanvas(donnees.get(i)), XtoCanvas(i+1), YtoCanvas(donnees.get(i+1)));
@@ -35,10 +37,11 @@ public class Graph {
     textAlign(RIGHT);
     text(int(minVal),this.posX - 5, this.posY + this.height + 7);
     text(int(maxVal),this.posX - 5, this.posY + 7);
+    if (donnees.size() > 0) text(donnees.get(0), this.posX + width, this.posY +height+ 15);
   }
   
   private int XtoCanvas(int x) {
-    return (int)map(x,MAX_ARRAY_SIZE, 0, this.posX, this.posX+this.width);
+    return (int)map(x,0, MAX_ARRAY_SIZE - 1, this.posX, this.posX+this.width);
   }
   
   private int YtoCanvas(float y) {
@@ -47,9 +50,9 @@ public class Graph {
   
   public void addValue(float val){
     if(donnees.size() == MAX_ARRAY_SIZE){
-      donnees.remove(0);
+      donnees.remove(donnees.size() - 1);
     }
-    donnees.add(val);
+    donnees.add(0,val);
   }  
   
 }
