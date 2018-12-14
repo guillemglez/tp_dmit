@@ -25,6 +25,7 @@ private Button currentComBtn;
 private Graph graph;
 private LogInfo loginfo;
 private IPInfo ipinfo;
+private UdpServer udpserver;
 private int count;
 private String btnText;
 
@@ -32,7 +33,7 @@ private String btnText;
 import processing.serial.*;
 
 void settings() {
-  size(640, 320);
+  size(640, 640);
   smooth();
 }
 
@@ -59,6 +60,7 @@ void setup() {
    loginfo.setMAC("Notre MAC");
    
    ipinfo = new IPInfo(GRAPH_POSX + GRAPH_WIDTH + 50, GRAPH_POSY + GRAPH_HEIGHT / 2, GRAPH_WIDTH, GRAPH_HEIGHT / 2);
+   //udpserver = new UdpServer(
 }
 
 void draw() {
