@@ -53,7 +53,7 @@ void setup() {
      count++;
    }
    graphHum = new Graph(GRAPH_POSX + GRAPH_WIDTH + 50, GRAPH_POSY,GRAPH_WIDTH,GRAPH_HEIGHT,0,100);
-   
+   udpserver = new UdpServer(GRAPH_POSX, GRAPH_POSY + GRAPH_HEIGHT + 50, GRAPH_HEIGHT, GRAPH_WIDTH + 50 + GRAPH_WIDTH);
 }
 
 void draw() {
@@ -90,6 +90,7 @@ void draw() {
   }
   
   graphHum.draw();
+  udpserver.draw();
 }
 
 void mouseReleased() {

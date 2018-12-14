@@ -2,7 +2,7 @@ public class Graph {
   private int posX,posY,width,height;
   private float minVal, maxVal;
   private ArrayList<Float> donnees;
-  private final static int MAX_ARRAY_SIZE=150;
+  private final static int MAX_ARRAY_SIZE=50;
   
   public Graph(int posX,int posY,int width, int height, float minVal, float maxVal) {
     this.posX = posX;
