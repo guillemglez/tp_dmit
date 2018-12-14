@@ -1,6 +1,6 @@
-#include <SPI.h>
 #include <WiFiNINA.h>
 #include <WiFiUdp.h>
+#include "Adafruit_Si7021.h"
 
 char ssid[] = "TP_DMIT";
 char pwd[] = "dmit3ATP";
@@ -11,8 +11,10 @@ unsigned int localPort = 4321;      // local port to listen on
 
 char packetBuffer[255]; //buffer to hold incoming packet
 char  ReplyBuffer[] = "Message reçu";       // a string to send back
+Adafruit_Si7021 sensor = Adafruit_Si7021();
 
 WiFiUDP Udp;
+long lastTime;
 
 void setup() {
   // put your setup code here, to run once:
@@ -24,6 +26,12 @@ void setup() {
     Serial.println("Communication with WiFi module failed!");
     // don't continue
     while (true);
+  }
+  
+  if (!sensor.begin()) {
+    Serial.println("Did not find Si7021 sensor!");
+    while (true)
+      ;
   }
   
   while (status != WL_CONNECTED) {
@@ -40,6 +48,7 @@ void setup() {
   Serial.println("\nStarting connection to server...");
   // if you get a connection, report back via serial:
   Udp.begin(localPort);
+  lastTime = millis();
 }
 
 void loop() {
@@ -68,6 +77,15 @@ void loop() {
     Udp.write(ReplyBuffer);
     Udp.endPacket();
   }
+  
+  if ( (millis() - lastTime) > 500){
+    lastTime = millis();
+    Serial.print("HUM:");
+    Serial.println(sensor.readHumidity(), 2);
+    Serial.print("TEMP:");
+    Serial.println(sensor.readTemperature(), 2);
+  }
+  
 }
 
 
