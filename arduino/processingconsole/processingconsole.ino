@@ -22,6 +22,7 @@ byte ip[] = { 192, 168, 0, 254 };
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
+  while (!Serial){}
   pinMode(LED_BUILTIN, OUTPUT);
   state = STATE_LED_OFF;
 
