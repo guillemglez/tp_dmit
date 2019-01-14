@@ -1,8 +1,9 @@
 public class LogInfo {
   private int posX,posY,width,height;
   private final static int textSpacing=15;
+  private final static int columnWidth=150;
   
-  public String ssid, pwd, ip, mac;
+  public String ssid, pwd, ip, mac, gyro, rgb, prox;
   
   public LogInfo(int posX,int posY,int width, int height) {
     this.posX = posX;
@@ -29,6 +30,18 @@ public class LogInfo {
     this.mac = mac;
   }
   
+  void setProx(String prox) {
+    this.prox = prox;
+  }
+  
+  void setGyro(String gyro) {
+    this.gyro = gyro;
+  }
+  
+  void setRGB(String rgb) {
+    this.rgb = rgb;
+  }
+  
   void draw() {
     //stroke(255);
     noFill();
@@ -47,5 +60,13 @@ public class LogInfo {
     textY += textSpacing;
     //text("MAC : " + mac, textX, textY);
     //textY += textSpacing;
+    
+    textX += columnWidth;
+    textY = posY + 20;
+    text(prox + " ", textX, textY);
+    textY += textSpacing;
+    text(gyro + " ", textX, textY);
+    textY += textSpacing;
+    text(rgb + " ", textX, textY);
   }
 }

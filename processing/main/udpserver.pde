@@ -1,7 +1,7 @@
 public class UdpServer {
   private int posX,posY,width,height;
   private final static int textSpacing=15;
-  private final static int maxlines = 10;
+  private final static int maxlines = 20;
   private ArrayList<String> lines;
   
   public UdpServer(int posX,int posY,int width, int height) {

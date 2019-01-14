@@ -2,7 +2,7 @@ public class Graph {
   private int posX,posY,width,height;
   private float minVal, maxVal;
   private ArrayList<Float> donnees;
-  private final static int MAX_ARRAY_SIZE=20;
+  private final static int MAX_ARRAY_SIZE=200;
   
   public Graph(int posX,int posY,int width, int height, float minVal, float maxVal) {
     this.posX = posX;
@@ -37,7 +37,7 @@ public class Graph {
     textAlign(RIGHT);
     text(int(minVal),this.posX - 5, this.posY + this.height + 7);
     text(int(maxVal),this.posX - 5, this.posY + 7);
-    if (donnees.size() > 0) text(donnees.get(0), this.posX + width, this.posY +height+ 15);
+    if (donnees.size() > 0) text(int(donnees.get(0)), this.posX + width, this.posY +height+ 15);
   }
   
   private int XtoCanvas(int x) {
