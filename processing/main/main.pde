@@ -24,19 +24,18 @@ private Button expandBtn;
 private Button currentComBtn;
 private Graph2 graphSensor;
 private UdpServer udpserver;
-private int count;
 private String btnText;
+private LogInfo logInfo;
 
 //import classes;
 import processing.serial.*;
 
 void settings() {
-  size(640, 1280);
+  size(640, 840);
   smooth();
 }
 
 void setup() {
-   count=0;
    ledState = false;
    btnText = "--";
    connectBtn = new Button(RECT_1_X, RECT_1_Y, RECT_WIDTH, RECT_HEIGHT, "CONNECT", 46, 204, 113, 231, 76, 60);
@@ -52,25 +51,26 @@ void setup() {
    }
    graphSensor = new Graph2(GRAPH_POSX, GRAPH_POSY, GRAPH_WIDTH*2 + 50 ,GRAPH_HEIGHT, 10,50,20, 80);
    udpserver = new UdpServer(GRAPH_POSX, GRAPH_POSY + GRAPH_HEIGHT + 50, GRAPH_WIDTH + 50 + GRAPH_WIDTH, GRAPH_HEIGHT);
+   logInfo = new LogInfo(RECT_1_X + 150, RECT_1_Y, 200, RECT_HEIGHT + 20);
 }
 
 void draw() {
 
   background(236, 240, 241);
   
-  if (connectBtn.isClicked()) {
-    if (ledState) {
-      fill(230, 126, 34);
-    } else {
-      fill(44, 62, 80);
-    }
-  } else {
-    noFill();
-  }
-  ellipse(LED_START_X, LED_START_Y, LED_WIDTH, LED_HEIGHT);
+  //if (connectBtn.isClicked()) {
+  //  if (ledState) {
+  //    fill(230, 126, 34);
+  //  } else {
+  //    fill(44, 62, 80);
+  //  }
+  //} else {
+  //  noFill();
+  //}
+  //ellipse(LED_START_X, LED_START_Y, LED_WIDTH, LED_HEIGHT);
  
   graphSensor.draw();
-    
+  logInfo.draw();  
   connectBtn.draw();
   expandBtn.draw();
   currentComBtn.draw();
@@ -121,8 +121,8 @@ void mouseReleased() {
 
 void serialEvent(Serial arduino){
    String serialText = arduino.readString();
-   if (serialText.contains("LED_ON")) ledState = true;
-   if (serialText.contains("LED_OFF")) ledState = false;
+   if (serialText.contains("SSID")) logInfo.setSSID(serialText.split(":")[1]);
+   if (serialText.contains("IP")) logInfo.setIP(serialText.split(":")[1]);
    if (serialText.contains("UDP")) udpserver.addLine("UDP: ", serialText.split(":")[2]);
    if (serialText.contains("HUM")) graphSensor.addValue2(Float.parseFloat(serialText.split(":")[1]));
    if (serialText.contains("TEMP")) graphSensor.addValue1(Float.parseFloat(serialText.split(":")[1]));

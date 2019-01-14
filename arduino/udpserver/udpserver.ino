@@ -2,10 +2,12 @@
 #include <WiFiUdp.h>
 #include "Adafruit_Si7021.h"
 
-int BUFFER_SIZE = 40;
+#define BUFFER_SIZE 40
 
+IPAddress broadcastIP(192,168,0,255);
 char ssid[] = "TP_DMIT";
 char pwd[] = "dmit3ATP";
+byte mac[6];
 int status = WL_IDLE_STATUS;
 float tempBuffer[BUFFER_SIZE];
 float humBuffer[BUFFER_SIZE];
@@ -18,7 +20,8 @@ char  ReplyBuffer[] = "Message reçu";       // a string to send back
 Adafruit_Si7021 sensor = Adafruit_Si7021();
 
 WiFiUDP Udp;
-long lastTime;
+unsigned long lastTime;
+unsigned long lastLog;
 int countValues = 0;
 
 void setup() {
@@ -59,7 +62,7 @@ void setup() {
     humBuffer[countValues] = sensor.readHumidity();
     tempBuffer[countValues] = sensor.readTemperature();
     countValues++;
-  } while (countValues % 10 != 0);
+  } while (countValues % BUFFER_SIZE != 0);
   
 }
 
@@ -89,7 +92,6 @@ void loop() {
     Udp.write(ReplyBuffer);
     Udp.endPacket();
   }
-  
   if ( (millis() - lastTime) > 50) {
     lastTime = millis();
     humBuffer[countValues] = sensor.readHumidity();
@@ -101,7 +103,18 @@ void loop() {
     Serial.print("TEMP:");
     Serial.println(bufferMean(tempBuffer, BUFFER_SIZE), 2);
   }
-  
+
+  if ((millis() - lastLog) > 5000) {
+
+    Udp.beginPacket(broadcastIP, localPort);
+    Udp.print("ParkinsonCentralIP:");
+    Udp.print(WiFi.localIP());
+    Udp.endPacket();
+    
+    printWifiStatus();
+
+    lastLog = millis();    
+  }  
 }
 
 
@@ -120,6 +133,10 @@ void printWifiStatus() {
   Serial.print("signal strength (RSSI):");
   Serial.print(rssi);
   Serial.println(" dBm");
+}
+
+void sendIPBroadcast(String ip) {
+  
 }
 
 float bufferMean( float* buffer, int length) {

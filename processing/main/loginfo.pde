@@ -41,11 +41,11 @@ public class LogInfo {
     
     text("SSID : " + ssid, textX, textY);
     textY += textSpacing;
-    text("PWD : " + pwd, textX, textY);
-    textY += textSpacing;
+    //text("PWD : " + pwd, textX, textY);
+    //textY += textSpacing;
     text("IP : " + ip, textX, textY);
     textY += textSpacing;
-    text("MAC : " + mac, textX, textY);
-    textY += textSpacing;
+    //text("MAC : " + mac, textX, textY);
+    //textY += textSpacing;
   }
 }
