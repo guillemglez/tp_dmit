@@ -2,9 +2,13 @@
 #include <WiFiUdp.h>
 #include "Adafruit_Si7021.h"
 
+int BUFFER_SIZE = 40;
+
 char ssid[] = "TP_DMIT";
 char pwd[] = "dmit3ATP";
 int status = WL_IDLE_STATUS;
+float tempBuffer[BUFFER_SIZE];
+float humBuffer[BUFFER_SIZE];
 WiFiClient wifi;
 
 unsigned int localPort = 4321;      // local port to listen on
@@ -15,6 +19,7 @@ Adafruit_Si7021 sensor = Adafruit_Si7021();
 
 WiFiUDP Udp;
 long lastTime;
+int countValues = 0;
 
 void setup() {
   // put your setup code here, to run once:
@@ -49,6 +54,13 @@ void setup() {
   // if you get a connection, report back via serial:
   Udp.begin(localPort);
   lastTime = millis();
+
+  do {    
+    humBuffer[countValues] = sensor.readHumidity();
+    tempBuffer[countValues] = sensor.readTemperature();
+    countValues++;
+  } while (countValues % 10 != 0);
+  
 }
 
 void loop() {
@@ -78,12 +90,16 @@ void loop() {
     Udp.endPacket();
   }
   
-  if ( (millis() - lastTime) > 50){
+  if ( (millis() - lastTime) > 50) {
     lastTime = millis();
+    humBuffer[countValues] = sensor.readHumidity();
+    tempBuffer[countValues] = sensor.readTemperature();
+    countValues = (countValues + 1) % BUFFER_SIZE;
+    
     Serial.print("HUM:");
-    Serial.println(sensor.readHumidity(), 2);
+    Serial.println(bufferMean(humBuffer, BUFFER_SIZE), 2);
     Serial.print("TEMP:");
-    Serial.println(sensor.readTemperature(), 2);
+    Serial.println(bufferMean(tempBuffer, BUFFER_SIZE), 2);
   }
   
 }
@@ -104,6 +120,15 @@ void printWifiStatus() {
   Serial.print("signal strength (RSSI):");
   Serial.print(rssi);
   Serial.println(" dBm");
+}
+
+float bufferMean( float* buffer, int length) {
+  float mean = 0;
+  for (int i = 0; i < length; i++)
+  {
+    mean += buffer[i];
+  }
+  return mean / (float) length;
 }
 
 
