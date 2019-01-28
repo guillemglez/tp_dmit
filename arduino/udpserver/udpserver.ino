@@ -135,10 +135,6 @@ void printWifiStatus() {
   Serial.println(" dBm");
 }
 
-void sendIPBroadcast(String ip) {
-  
-}
-
 float bufferMean( float* buffer, int length) {
   float mean = 0;
   for (int i = 0; i < length; i++)
