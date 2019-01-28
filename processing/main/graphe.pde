@@ -1,8 +1,12 @@
+/**
+* @author Guillem Gonzalez Vela <guillem.vela@etudiant.univ-rennes1.fr>
+* @author Maxime ARIF <maxime.arif@etudiant.univ-rennes1.fr>
+**/
 public class Graph {
   private int posX,posY,width,height;
   private float minVal, maxVal;
   private ArrayList<Float> donnees;
-  private final static int MAX_ARRAY_SIZE=200;
+  private final static int MAX_ARRAY_SIZE=70;
   
   public Graph(int posX,int posY,int width, int height, float minVal, float maxVal) {
     this.posX = posX;

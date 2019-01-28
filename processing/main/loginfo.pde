@@ -1,9 +1,13 @@
+/**
+* @author Guillem Gonzalez Vela <guillem.vela@etudiant.univ-rennes1.fr>
+* @author Maxime ARIF <maxime.arif@etudiant.univ-rennes1.fr>
+**/
 public class LogInfo {
   private int posX,posY,width,height;
   private final static int textSpacing=15;
   private final static int columnWidth=150;
   
-  public String ssid, pwd, ip, mac, gyro, rgb, prox;
+  public String ssid, pwd, ip, mac, local, gyro, rgb, prox;
   
   public LogInfo(int posX,int posY,int width, int height) {
     this.posX = posX;
@@ -42,6 +46,10 @@ public class LogInfo {
     this.rgb = rgb;
   }
   
+  void setLocal(String msg) {
+    this.local = msg;
+  }
+  
   void draw() {
     //stroke(255);
     noFill();
@@ -63,10 +71,12 @@ public class LogInfo {
     
     textX += columnWidth;
     textY = posY + 20;
-    text(prox + " ", textX, textY);
+    text("Humidité et Temperature : " + local + " ", textX, textY);
     textY += textSpacing;
-    text(gyro + " ", textX, textY);
+    text("Proximité : " + prox + " ", textX, textY);
     textY += textSpacing;
-    text(rgb + " ", textX, textY);
+    text("Gyroscope : " + gyro + " ", textX, textY);
+    textY += textSpacing;
+    text("Senseur RGB : " + rgb + " ", textX, textY);
   }
 }

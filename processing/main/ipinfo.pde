@@ -1,3 +1,7 @@
+/**
+* @author Guillem Gonzalez Vela <guillem.vela@etudiant.univ-rennes1.fr>
+* @author Maxime ARIF <maxime.arif@etudiant.univ-rennes1.fr>
+**/
 public class IPInfo {
   private int[] IPS = {241,242,243,244,245,246,247,248,249,250,251,252,253};
   private boolean[] stat = {false,false,false,false,false,false,false,false,false,false,false,false,false};

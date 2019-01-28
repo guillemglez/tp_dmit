@@ -1,8 +1,17 @@
+/**
+* @author Guillem Gonzalez Vela <guillem.vela@etudiant.univ-rennes1.fr>
+* @author Maxime ARIF <maxime.arif@etudiant.univ-rennes1.fr>
+* @brief Ce fichier---
+**/
+ 
 #include <WiFiNINA.h>
 #include <WiFiUdp.h>
 #include "Adafruit_Si7021.h"
 
 #define BUFFER_SIZE 40
+
+#define HUM_SEUIL 60
+#define TEMP_SEUIL 29
 
 IPAddress broadcastIP(192,168,0,255);
 char ssid[] = "TP_DMIT";
@@ -27,8 +36,7 @@ int countValues = 0;
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
-  while (!Serial){}
-
+  
   // check for the WiFi module:
   if (WiFi.status() == WL_NO_MODULE) {
     Serial.println("Communication with WiFi module failed!");
@@ -49,7 +57,9 @@ void setup() {
     status = WiFi.begin(ssid, pwd);
     delay(10000);
   }
-   
+
+  while (!Serial){}
+  
   Serial.println("Connected to wifi");
   printWifiStatus();
 
@@ -88,20 +98,28 @@ void loop() {
     Serial.println(packetBuffer);
 
     // send a reply, to the IP address and port that sent us the packet we received
-    Udp.beginPacket(Udp.remoteIP(), Udp.remotePort());
+ /*   Udp.beginPacket(Udp.remoteIP(), Udp.remotePort());
     Udp.write(ReplyBuffer);
-    Udp.endPacket();
+    Udp.endPacket();*/
   }
   if ( (millis() - lastTime) > 50) {
     lastTime = millis();
     humBuffer[countValues] = sensor.readHumidity();
     tempBuffer[countValues] = sensor.readTemperature();
-    countValues = (countValues + 1) % BUFFER_SIZE;
     
     Serial.print("HUM:");
     Serial.println(bufferMean(humBuffer, BUFFER_SIZE), 2);
     Serial.print("TEMP:");
     Serial.println(bufferMean(tempBuffer, BUFFER_SIZE), 2);
+    Serial.print("MSG:");
+    if ((humBuffer[countValues] > HUM_SEUIL) && (tempBuffer[countValues] > TEMP_SEUIL)) {
+      Serial.println("La personne est en train de souffler");
+    } else {
+      Serial.println("La personne ne souffle pas");
+    } 
+    
+    
+    countValues = (countValues + 1) % BUFFER_SIZE;
   }
 
   if ((millis() - lastLog) > 5000) {

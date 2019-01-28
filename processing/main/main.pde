@@ -1,3 +1,7 @@
+/**
+* @author Guillem Gonzalez Vela <guillem.vela@etudiant.univ-rennes1.fr>
+* @author Maxime ARIF <maxime.arif@etudiant.univ-rennes1.fr>
+**/
 public static final int RECT_WIDTH = 100;
 public static final int RECT_HEIGHT = 40;
 public static final int RECT_1_X = 245;
@@ -24,10 +28,11 @@ private Button expandBtn;
 private Button currentComBtn;
 private Graph2 graphSensor;
 private GraphRgb graphRgb;
-private Graph proxGraph;
+private Graph proxGraph, gyroGraph;
 private UdpServer udpserver;
 private String btnText;
 private LogInfo logInfo;
+private String newLineChar = "-";
 
 //import classes;
 import processing.serial.*;
@@ -55,7 +60,8 @@ void setup() {
    graphRgb = new GraphRgb(GRAPH_POSX + GRAPH_WIDTH + 120, GRAPH_POSY, GRAPH_WIDTH ,GRAPH_HEIGHT);
    proxGraph = new Graph(GRAPH_POSX, GRAPH_POSY + GRAPH_HEIGHT + 50, GRAPH_WIDTH, GRAPH_HEIGHT, 0, 255);
    udpserver = new UdpServer(GRAPH_POSX + GRAPH_WIDTH + 120, GRAPH_POSY + GRAPH_HEIGHT + 50, GRAPH_WIDTH, GRAPH_HEIGHT);
-   logInfo = new LogInfo(RECT_1_X + 150, RECT_1_Y, GRAPH_WIDTH, RECT_HEIGHT + 20);
+   gyroGraph = new Graph(GRAPH_POSX + GRAPH_WIDTH + 120, GRAPH_POSY + GRAPH_HEIGHT + 50, GRAPH_WIDTH, GRAPH_HEIGHT, 0, 20);
+   logInfo = new LogInfo(RECT_1_X + 150, RECT_1_Y, GRAPH_WIDTH, RECT_HEIGHT + 35);
 }
 
 void draw() {
@@ -84,10 +90,13 @@ void draw() {
   text("Intensité des couleurs", GRAPH_POSX + GRAPH_WIDTH + 120 , GRAPH_POSY - 10);
   textAlign(LEFT, CENTER);
   text("Proximité", GRAPH_POSX , GRAPH_POSY + GRAPH_HEIGHT + 50 - 10);
+  textAlign(LEFT, CENTER);
+  text("Gyroscope", GRAPH_POSX + GRAPH_WIDTH + 120, GRAPH_POSY + GRAPH_HEIGHT + 50 - 10);
   
   graphRgb.draw();
   logInfo.draw();  
   proxGraph.draw();
+  gyroGraph.draw();
   
   connectBtn.draw();
   expandBtn.draw();
@@ -101,7 +110,7 @@ void draw() {
     expandBtn.setText("+");
   }
   
-  udpserver.draw();
+  //udpserver.draw();
 }
 
 void mouseReleased() {
@@ -141,9 +150,22 @@ void serialEvent(Serial arduino){
    String serialText = arduino.readString().replaceAll("(\\r|\\n)", "");
    if (serialText.contains("SSID")) logInfo.setSSID(serialText.split(":")[1]);
    if (serialText.contains("IP")) logInfo.setIP(serialText.split(":")[1]);
-   if (serialText.contains("UDP")) udpserver.addLine("UDP from " + serialText.split(":", 3)[1] + ": ", serialText.split(":", 3)[2]);
+   if (serialText.contains("UDP")) {
+     if (newLineChar.contains("-")) {
+       newLineChar = " ";
+     } else {
+       newLineChar = "-";
+     }
+     udpserver.addLine(newLineChar + "UDP from " + serialText.split(":", 3)[1] + ": ", serialText.split(":", 3)[2]);
+     println(newLineChar + "UDP from " + serialText.split(":", 3)[1] + ": ", serialText.split(":", 3)[2]);
+   }
    if (serialText.contains("HUM")) graphSensor.addValue2(Float.parseFloat(serialText.split(":")[1]));
    if (serialText.contains("TEMP")) graphSensor.addValue1(Float.parseFloat(serialText.split(":")[1]));
+   if (serialText.contains("MSG")) logInfo.setLocal(serialText.split(":")[1]);
+   if (serialText.contains("GYRO")) {
+     gyroGraph.addValue(Float.parseFloat(serialText.split(":")[3])); 
+     logInfo.setGyro(serialText.split(":")[4]);
+   }
    if (serialText.contains("RGB")) {
      int r = Integer.parseInt(serialText.split(":")[3]);
      int g = Integer.parseInt(serialText.split(":")[4]);
@@ -151,7 +173,10 @@ void serialEvent(Serial arduino){
      graphRgb.addValue(r, g, b);
      logInfo.setRGB(serialText.split(":")[6]);
    }
-   if (serialText.contains("Prox")) proxGraph.addValue(Float.parseFloat(serialText.split(":")[3]));
+   if (serialText.contains("Prox")) {
+     proxGraph.addValue(Float.parseFloat(serialText.split(":")[3])); 
+     logInfo.setProx(serialText.split(":")[4]);
+   }
 }
 
 void mouseMoved(){

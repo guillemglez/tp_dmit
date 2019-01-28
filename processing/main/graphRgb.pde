@@ -1,3 +1,7 @@
+/**
+* @author Guillem Gonzalez Vela <guillem.vela@etudiant.univ-rennes1.fr>
+* @author Maxime ARIF <maxime.arif@etudiant.univ-rennes1.fr>
+**/
 public class GraphRgb {
   private int posX,posY,width,height;
   private int minVal, maxVal;
