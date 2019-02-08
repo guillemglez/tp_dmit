@@ -1,3 +1,8 @@
+/**
+* @author Maxime ARIF <maxime.arif@etudiant.univ-rennes1.fr>
+* @author Guillem GONZÁLEZ VELA <guillem.vela@etudiant.univ-rennes1.fr>
+* @brief Classe Button : Définit un objet clickable
+**/
 public class Button {
   private int posX,posY,width,height;
   private String text;
@@ -15,16 +20,19 @@ public class Button {
     setBtnOverColor(rclicked, gclicked, bclicked);
   }
   
+  // Change le texte d'affichage
   public void setText(String text){
     this.text = text;
   }
   
+  // Change la couleur d'affichage
   public void setBtnColor(int r, int g, int b) {
     this.r = r;
     this.g = g;
     this.b = b;
   }
   
+  // Change la couleur de "hover"
   public void setBtnOverColor(int r, int g, int b) {
     this.rclicked = r;
     this.gclicked = g;

@@ -1,10 +1,19 @@
+/**
+* @author Maxime ARIF <maxime.arif@etudiant.univ-rennes1.fr>
+* @author Guillem GONZÁLEZ VELA <guillem.vela@etudiant.univ-rennes1.fr>
+* @brief Code ARDUINO qui:
+*   - Se connecte à un réseau WiFi (dans ce cas, nommé TP_DMIT)
+*   - Fait clignotter la LED de la plaque
+*   - Fait ping aux dernières 8 IPs et n'écoute la réponse 
+*   - Transmet les données de la LED et du ping par serial
+**/
+
 #include <WiFiNINA.h>
 
 #define STATE_LED_OFF 20
 #define STATE_LED_ON 30
 unsigned int state;
-unsigned long lastTs;
-unsigned long lastLog;
+unsigned long lastTs, lastLog, lastPing;
 
 char ssid[] = "TP_DMIT";
 char pwd[] = "dmit3ATP";
@@ -20,7 +29,6 @@ boolean png;
 byte ip[] = { 192, 168, 0, 254 };
 
 void setup() {
-  // put your setup code here, to run once:
   Serial.begin(9600);
   while (!Serial){}
   pinMode(LED_BUILTIN, OUTPUT);
@@ -36,12 +44,15 @@ void setup() {
 
   WiFi.macAddress(mac);
   lastTs = millis();
-  lastLog = lastTs;
+  lastLog = millis();
+  lastPing = millis();
 
-//  pinged = pingall();
+  pinged = pingall();
 }
 
 void loop() {
+
+  // Faire clignotter la LED
   if ((state == STATE_LED_OFF) && ((millis() - lastTs) > 1000)) {
     digitalWrite(LED_BUILTIN, HIGH);
     state = STATE_LED_ON;
@@ -52,6 +63,7 @@ void loop() {
     lastTs = millis();
   }
 
+  // Envoyer le status par serial 5 fois par séconde
   if ((millis() - lastLog) > 200) {
 
     Serial.println("READY");
@@ -67,9 +79,9 @@ void loop() {
 
     Serial.print("PWD:");
     Serial.println(pwd);
-//
-//    Serial.print("IP:");
-//    Serial.println(WiFi.localIP());
+
+    Serial.print("IP:");
+    Serial.println(WiFi.localIP());
 
     Serial.print("MAC:");
     Serial.print(mac[5], HEX);
@@ -86,18 +98,17 @@ void loop() {
 
     Serial.println(pinged);
 
-
     lastLog = millis();
   }
-  //pinged = pingall();
 
-  /* Serial.println("PINGING...");
-    png = WiFi.ping(ip);
-    Serial.println(millis() - lastLog);
-    //Serial.println(WiFi.gatewayIP());
-  */
+  // Ping au réseau toutes les minutes
+  if ((millis() - lastPing) > 60000) {
+    pinged = pingall();
+    lastPing = millis();
+  }
 }
 
+// Fonction qui fait ping aux IPs de la réseu (entre 241 et 248) et en retourne un string avec la information de ceux qui ont répondu
 String pingall() {
   Serial.println("Pinging in LAN...");
   String reponse = "PING";

@@ -1,6 +1,7 @@
 /**
-* @author Guillem Gonzalez Vela <guillem.vela@etudiant.univ-rennes1.fr>
 * @author Maxime ARIF <maxime.arif@etudiant.univ-rennes1.fr>
+* @author Guillem GONZÁLEZ VELA <guillem.vela@etudiant.univ-rennes1.fr>
+* @brief Classe GraphRgb : Définit un objet graphe avec trois variables RGB
 **/
 public class GraphRgb {
   private int posX,posY,width,height;
@@ -60,6 +61,7 @@ public class GraphRgb {
     if (donneesB.size() > 0) text(donneesB.get(0), this.posX + width, this.posY +height+ 15);
   }
   
+  // Méthodes de traduction de valeur de graphe à position dans le canvas de Processing
   private int XtoCanvas(int x) {
     return (int)map(x,0, MAX_ARRAY_SIZE - 1, this.posX, this.posX+this.width);
   }

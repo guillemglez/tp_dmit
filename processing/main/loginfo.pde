@@ -1,6 +1,7 @@
 /**
-* @author Guillem Gonzalez Vela <guillem.vela@etudiant.univ-rennes1.fr>
 * @author Maxime ARIF <maxime.arif@etudiant.univ-rennes1.fr>
+* @author Guillem GONZÁLEZ VELA <guillem.vela@etudiant.univ-rennes1.fr>
+* @brief Classe LogInfo : Affiche le status de la plaque ARDUINO et les messages d'état de patient transmises par chaque plaque selon le traitement des données de leurs senseurs
 **/
 public class LogInfo {
   private int posX,posY,width,height;

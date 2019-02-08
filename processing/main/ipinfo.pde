@@ -1,6 +1,7 @@
 /**
-* @author Guillem Gonzalez Vela <guillem.vela@etudiant.univ-rennes1.fr>
 * @author Maxime ARIF <maxime.arif@etudiant.univ-rennes1.fr>
+* @author Guillem GONZÁLEZ VELA <guillem.vela@etudiant.univ-rennes1.fr>
+* @brief Classe IPInfo : Affiche les IPs qui sont actives et ceux qui ne le sont pas à partir de l'information PING transmise pour la plaque ARDUINO
 **/
 public class IPInfo {
   private int[] IPS = {241,242,243,244,245,246,247,248,249,250,251,252,253};
@@ -23,7 +24,6 @@ public class IPInfo {
   int[] getIPs() {
     return IPS;
   }
-  
   
   void draw() {
     textAlign(CENTER);
@@ -48,12 +48,10 @@ public class IPInfo {
         count++;
       }
     }
-    
     noFill();
     rect(posX, posY, width, height);
-    
     textAlign(LEFT);
-
+    }
   }
-  }
+  
 }

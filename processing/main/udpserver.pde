@@ -1,6 +1,7 @@
 /**
-* @author Guillem Gonzalez Vela <guillem.vela@etudiant.univ-rennes1.fr>
 * @author Maxime ARIF <maxime.arif@etudiant.univ-rennes1.fr>
+* @author Guillem GONZÁLEZ VELA <guillem.vela@etudiant.univ-rennes1.fr>
+* @brief Classe UdpServer : Classe avec un purpose de debug ; affiche tous les paquets UDP transmis par l'ARDUINO 
 **/
 public class UdpServer {
   private int posX,posY,width,height;
@@ -36,4 +37,5 @@ public class UdpServer {
        text(lines.get(i), posX + textSpacing, posY + (i+1)*textSpacing);
     }     
   }
+  
 }

@@ -1,6 +1,7 @@
 /**
-* @author Guillem Gonzalez Vela <guillem.vela@etudiant.univ-rennes1.fr>
 * @author Maxime ARIF <maxime.arif@etudiant.univ-rennes1.fr>
+* @author Guillem GONZÁLEZ VELA <guillem.vela@etudiant.univ-rennes1.fr>
+* @brief Classe Graph2 : Définit un objet graphe avec deux variables
 **/
 public class Graph2 {
   private int posX,posY,width,height;
@@ -66,6 +67,7 @@ public class Graph2 {
     if (donnees2.size() > 0) text(donnees2.get(0), this.posX + width - 5, this.posY + height + 15);
   }
   
+  // Méthodes de traduction de valeur de graphe à position dans le canvas de Processing
   private int XtoCanvas(int x) {
     return (int)map(x,0, MAX_ARRAY_SIZE - 1, this.posX, this.posX+this.width);
   }
