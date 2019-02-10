@@ -1,7 +1,7 @@
 /**
 * @author Maxime ARIF <maxime.arif@etudiant.univ-rennes1.fr>
 * @author Guillem GONZÁLEZ VELA <guillem.vela@etudiant.univ-rennes1.fr>
-* @brief Code processing qui se connecte à un port série et intérprete les données (voir arduino/udpserver.ino) 
+* @brief Code principal Processing pour ce projet. Il se connecte à un port série et intérprete les données (voir arduino/udpserver.ino) 
 **/
 
 // Taille des bouttons

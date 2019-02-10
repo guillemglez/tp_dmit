@@ -1,7 +1,7 @@
 /**
 * @author Maxime ARIF <maxime.arif@etudiant.univ-rennes1.fr>
 * @author Guillem GONZÁLEZ VELA <guillem.vela@etudiant.univ-rennes1.fr>
-* @brief Code ARDUINO qui:
+* @brief Code principal ARDUINO pour ce projet. Il :
 *   - Se connecte à un réseau WiFi (dans ce cas, nommé TP_DMIT)
 *   - Émet un broadcast à fin d'être réconnu pour les autres dispositifs
 *   - Reste à l'écoute de paquets UDP des autres dispositifs
@@ -43,20 +43,18 @@ unsigned long lastLog;
 int countValues = 0;
 
 void setup() {
-  // put your setup code here, to run once:
+  //initialisation du sérial
   Serial.begin(9600);
   
   // check for the WiFi module:
   if (WiFi.status() == WL_NO_MODULE) {
     Serial.println("Communication with WiFi module failed!");
-    // don't continue
-    while (true);
+    while (true); // ne pas continuer
   }
   
   if (!sensor.begin()) {
     Serial.println("Did not find Si7021 sensor!");
-    while (true)
-      ;
+    while (true); // ne pas continuer
   }
   
   while (status != WL_CONNECTED) {
@@ -67,7 +65,7 @@ void setup() {
     delay(10000);
   }
 
-  while (!Serial){} // Ne plus rien faire si le Serial n'est pas activé
+  while (!Serial){} // Ne plus rien faire si l'ordinateur n'est pas à l'écoute du sérial
   
   Serial.println("Connected to wifi");
   printWifiStatus();
