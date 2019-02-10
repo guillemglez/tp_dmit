@@ -10,7 +10,7 @@ Also, UDP packages are expected to be received from other Arduino in the same LA
 
 ## Run the code
 
-Compile and ```arduino/udpserver/udpserver.ino``` in the Arduino MKR WiFi 1010. 
+Compile and upload ```arduino/udpserver/udpserver.ino``` in the Arduino MKR WiFi 1010. 
 
 Run ```processing/main/main.pde``` in a Processing client.
 
